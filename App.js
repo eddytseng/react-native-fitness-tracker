@@ -93,7 +93,7 @@ export default class App extends Component {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{ flex: 1 }}>
-			<UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
+			    <UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
           <Tabs />
         </View>
       </Provider>
