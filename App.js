@@ -13,6 +13,8 @@ import Live from './components/Live';
 
 import reducer from "./reducers";
 import { white, purple } from "./utils/colors";
+import { setLocalNotification } from './utils/helpers';
+
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -106,14 +108,17 @@ const MainNavigator = createStackNavigator({
 })
 
 export default class App extends Component {
-  render() {
-    return (
-        <Provider store={createStore(reducer)}>
-			<View style={{ flex: 1 }}>
-				<UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
-				<MainNavigator />
-			</View>
-        </Provider>
-    );
-  }
+	componentDidMount() {
+		setLocalNotification();
+	}
+	render() {
+		return (
+			<Provider store={createStore(reducer)}>
+				<View style={{ flex: 1 }}>
+					<UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
+					<MainNavigator />
+				</View>
+			</Provider>
+		);
+	}
 }

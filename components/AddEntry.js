@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
-import { getMetricMetaInfo, timeToString, getDailyReminderValue } from '../utils/helpers.js';
+import { getMetricMetaInfo, timeToString, getDailyReminderValue, clearLocalNotification, setLocalNotification } from '../utils/helpers.js';
 import UdaciSlider from './UdaciSlider';
 import UdaciStepper from './UdaciStepper';
 import DateHeader from './DateHeader';
@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import { addEntry } from '../actions';
 import { submitEntry, removeEntry } from '../utils/api';
 import { white, purple } from '../utils/colors.js';
+
 
 const styles = StyleSheet.create({
 	container: {
@@ -124,6 +125,8 @@ class AddEntry extends Component {
 		this.toHome();
 
 		submitEntry({ key, entry });
+
+		clearLocalNotification().then(setLocalNotification);
 	}
 
 	reset = () => {
