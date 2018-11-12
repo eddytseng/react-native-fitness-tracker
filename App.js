@@ -1,25 +1,18 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  Platform,
-  Dimensions,
-  StatusBar
-} from "react-native";
-import AddEntry from "./components/AddEntry";
-import History from "./components/History";
-import { createStore } from "redux";
-import { Provider } from "react-redux";
-import reducer from "./reducers";
-import {
-  createBottomTabNavigator,
-  StackNavigator,
-  DrawerNavigator
-} from "react-navigation";
-import { Ionicons, FontAwesome } from "@expo/vector-icons";
-import { white, purple } from "./utils/colors";
 import { Constants } from 'expo';
+import { Ionicons, FontAwesome } from "@expo/vector-icons";
+import { StyleSheet, View, Text, Platform, Dimensions, StatusBar } from "react-native";
+import { createBottomTabNavigator, createStackNavigator, DrawerNavigator } from "react-navigation";
+import { Provider } from "react-redux";
+import { createStore } from "redux";
+
+import AddEntry from "./components/AddEntry";
+import EntryDetail from './components/EntryDetail';
+import History from "./components/History";
+import Live from './components/Live';
+
+import reducer from "./reducers";
+import { white, purple } from "./utils/colors";
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -63,7 +56,16 @@ const Tabs = createBottomTabNavigator(
           <FontAwesome name="plus-square" size={30} color={tintColor} />
         )
       }
-    }
+    },
+    Live: {
+      screen: Live,
+      navigationOptions: {
+        tabBarLabel: "Live",
+        tabBarIcon: ({ tintColor }) => (
+          <Ionicons name="ios-speedometer" size={30} color={tintColor} />
+        )
+      }
+    },
   },
   {
     navigationOptions: {
@@ -88,15 +90,30 @@ const Tabs = createBottomTabNavigator(
   }
 );
 
+const MainNavigator = createStackNavigator({
+  Home: {
+    screen: Tabs,
+  },
+  EntryDetail: {
+    screen: EntryDetail,
+    navigationOptions: {
+      headerTintColor: white,
+      headerStyle: {
+        backgroundColor: purple
+      }
+    }
+  }
+})
+
 export default class App extends Component {
   render() {
     return (
-      <Provider store={createStore(reducer)}>
-        <View style={{ flex: 1 }}>
-			    <UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
-          <Tabs />
-        </View>
-      </Provider>
+        <Provider store={createStore(reducer)}>
+			<View style={{ flex: 1 }}>
+				<UdaciStatusBar backgroundColor={purple} barStyle='light-content' />
+				<MainNavigator />
+			</View>
+        </Provider>
     );
   }
 }
